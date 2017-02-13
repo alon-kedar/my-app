@@ -22,12 +22,14 @@ const HEROES: Hero[] = [
   selector: 'app-root',
   template: '<h1>{{title}}</h1>' +
   '<ul class="heroes">' +
-  '<li *ngFor="let hero of heroes">' +
+  '<li *ngFor="let hero of heroes" [class.selected]="hero === selectedHero" (click)="onSelect(hero)">' +
   '<span class="badge">{{hero.id}}</span> {{hero.name}}</li>' +
   '</ul>' +
-  '<h2>{{hero.name}} details!</h2>' +
-  '<div><label>id: </label>{{hero.id}}</div>' +
-  '<div><input [(ngModel)]="hero.name" placeholder="name"></div>',
+  '<div *ngIf="selectedHero">' +
+  '<h2>{{selectedHero.name}} details!</h2>' +
+  '<div><label>id: </label>{{selectedHero.id}}</div>' +
+  '<div><input [(ngModel)]="selectedHero.name" placeholder="name"></div>' +
+  '</div>',
   styles: [`
   .selected {
     background-color: #CFD8DC !important;
@@ -80,11 +82,12 @@ const HEROES: Hero[] = [
 })
 
 export class AppComponent {
-  title = 'Tour of Heroes';
-  hero : Hero = {
-    id: 1,
-    name: 'windstorm'
+  onSelect(hero: Hero): void {
+    this.selectedHero = hero;
   }
+
+  title = 'Tour of Heroes';
+  selectedHero : Hero;
 
   heroes = HEROES;
 }
